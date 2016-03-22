@@ -26,7 +26,6 @@ class MainWindow(QMainWindow, mlbui.Ui_MainWindow):
         self.replay_window.itemDoubleClicked.connect(self.replay_clicked)  # replay double clicked
         self.get_game_button.clicked.connect(self.game_button_clicked)  # gets date
 
-
     def set_team_logos(self):
         self.team_logos = {'Angels': 'ana.jpg', 'D-backs': 'ari.jpg', 'Braves': 'atl.jpg',
                           'Orioles': 'bal.jpg', 'Red Sox': 'bos.jpg', 'Cubs': 'chc.jpg', 'Reds': 'cin.jpg',
@@ -72,7 +71,7 @@ class MainWindow(QMainWindow, mlbui.Ui_MainWindow):
             self.dialog = videowidget.VideoPlayer()  # the videowidget object of the imported file
             self.dialog.mediaPlayer.setMedia(QMediaContent(QUrl(url)))  # sets the file to play
             self.dialog.mediaPlayer.play()
-            self.dialog.setWindowTitle('MLB Replay')
+            self.dialog.setWindowTitle('MLB Replay - {}'.format(replay))  # adds replay title to window title
             self.dialog.show()
 
         #item = self.replay_window.currentItem().text()
@@ -84,18 +83,34 @@ class MainWindow(QMainWindow, mlbui.Ui_MainWindow):
         and then plays it.
         :return:
         """
-        self.dialog = videowidget.VideoPlayer()
-        self.playlist = QMediaPlaylist()
-        self.dialog.mediaPlayer.setPlaylist(self.playlist)
+        self.dialog = videowidget.VideoPlayer()  # this is the video player widget I import
+        self.playlist = QMediaPlaylist()  # the playlist
+        self.dialog.mediaPlayer.setPlaylist(self.playlist)  #mediaplay is the QMediaPlayer created in videowidget()
         for v in self.single_game_highlights_ordered:
             url = QUrl(v)
             self.playlist.addMedia(QMediaContent(url))
         self.dialog.mediaPlayer.setPlaylist(self.playlist)
+        self.dialog.nextButton.setEnabled(True)
+        self.dialog.nextButton.setToolTip('Next Replay')
 
         self.playlist.setCurrentIndex(0)
         self.dialog.mediaPlayer.play()
-        self.dialog.setWindowTitle('MLB Replay')
+        self.dialog.setWindowTitle('MLB Replay - {}'.format(self.replay_window.item(0).text()))
         self.dialog.show()
+        self.playlist.currentIndexChanged.connect(self.playlist_changed)  # call this function when the playlist changes.
+        self.dialog.nextButton.pressed.connect(self.next_button_pressed)
+
+    def playlist_changed(self):
+        num = self.playlist.currentIndex()  # gets current playlist index
+        self.dialog.setWindowTitle('MLB Replay - {}'.format(self.replay_window.item(num).text()))
+
+    def next_button_pressed(self):
+        num = self.playlist.currentIndex() + 1
+        self.dialog.mediaPlayer.stop()
+        self.dialog.setWindowTitle('MLB Replay - {}'.format(self.replay_window.item(num).text()))
+        self.playlist.setCurrentIndex(num)
+        self.dialog.mediaPlayer.play()
+
 
     def display_single_game_replays(self):
         """
