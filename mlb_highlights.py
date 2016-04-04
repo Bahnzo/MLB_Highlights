@@ -188,6 +188,8 @@ class MainWindow(QMainWindow, mlbui.Ui_MainWindow):
         """
         away_label = self.away_team_label
         home_label = self.home_team_label
+        away_label.clear()
+        home_label.clear()
         for game in games:
             if game.free == 'ALL':
                 home_pixmap = QPixmap('./logos/' + self.team_logos[game.home_team_name])
