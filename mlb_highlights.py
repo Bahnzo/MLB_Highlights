@@ -85,7 +85,7 @@ class MainWindow(QMainWindow, mlbui.Ui_MainWindow):
         """
         self.dialog = videowidget.VideoPlayer()  # this is the video player widget I import
         self.playlist = QMediaPlaylist()  # the playlist
-        self.dialog.mediaPlayer.setPlaylist(self.playlist)  #mediaplay is the QMediaPlayer created in videowidget()
+        self.dialog.mediaPlayer.setPlaylist(self.playlist)  # mediaPlayer is the QMediaPlayer created in videowidget()
         for v in self.single_game_highlights_ordered:
             url = QUrl(v)
             self.playlist.addMedia(QMediaContent(url))
@@ -107,10 +107,12 @@ class MainWindow(QMainWindow, mlbui.Ui_MainWindow):
     def next_button_pressed(self):
         num = self.playlist.currentIndex() + 1
         self.dialog.mediaPlayer.stop()
-        self.dialog.setWindowTitle('MLB Replay - {}'.format(self.replay_window.item(num).text()))
-        self.playlist.setCurrentIndex(num)
-        self.dialog.mediaPlayer.play()
-
+        if num < self.playlist.mediaCount():
+            self.dialog.setWindowTitle('MLB Replay - {}'.format(self.replay_window.item(num).text()))
+            self.playlist.setCurrentIndex(num)
+            self.dialog.mediaPlayer.play()
+        else:
+            self.dialog.close()
 
     def display_single_game_replays(self):
         """
@@ -119,6 +121,7 @@ class MainWindow(QMainWindow, mlbui.Ui_MainWindow):
         :param replay_data: xml of the replay info
         :return: ??
         """
+        self.single_game_highlights_ordered = []
         found = False
         self.replay_window.clear()
         teams = self.listWidget.currentItem().text()
@@ -213,7 +216,7 @@ class MainWindow(QMainWindow, mlbui.Ui_MainWindow):
             mo = media.search(tag.text)
             pk.replay_url = mo.group()
             game_highlights.append(pk)
-        game_highlights.sort(key=lambda x: x.id)  # sorts the list based on the game id
+        game_highlights.sort(key=lambda x: x.id)  # sorts the list of objects based on the game id
         return game_highlights
 
     def get_date_json(self):
@@ -290,6 +293,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-# TODO: impliment next and prev buttons. Probably in the videowidget.py file

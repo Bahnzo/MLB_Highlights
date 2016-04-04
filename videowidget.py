@@ -195,7 +195,7 @@ class VideoPlayer(QWidget):
 
     def closeEvent(self, QCloseEvent):
         self.mediaPlayer.stop()
-        del self.mediaPlayer
+        del self.mediaPlayer  # deletes the window. needed to open it later.
     '''
     def openFile(self):
         file_name = QFileDialog.getOpenFileName(self, "Open Movie", QDir.homePath())[0]
