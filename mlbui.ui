@@ -213,9 +213,9 @@
    <widget class="QLabel" name="free_game_time_label">
     <property name="geometry">
      <rect>
-      <x>546</x>
-      <y>42</y>
-      <width>67</width>
+      <x>534</x>
+      <y>54</y>
+      <width>103</width>
       <height>19</height>
      </rect>
     </property>

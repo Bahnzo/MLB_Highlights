@@ -9,7 +9,8 @@ import mlbui
 import sys
 import videowidget
 import re
-
+from datetime import *
+from dateutil.tz import *
 
 class MainWindow(QMainWindow, mlbui.Ui_MainWindow):
 
@@ -32,7 +33,7 @@ class MainWindow(QMainWindow, mlbui.Ui_MainWindow):
                           'Indians': 'cle.jpg', 'Rockies': 'col.jpg', 'White Sox': 'cws.jpg', 'Tigers': 'det.jpg',
                           'Astros': 'hou.jpg', 'Royals': 'kc.jpg', 'Dodgers': 'la.jpg', 'Marlins': 'mia.jpg',
                           'Brewers': 'mil.jpg', 'Twins': 'min.jpg', 'Mets': 'nym.jpg', 'Yankees': 'nyy.jpg',
-                          'A\'s': 'oak.jpg', 'Phillies': 'phi.jpg', 'Pirates': 'pit.jpg', 'Padres': 'sd.jpg',
+                          'Athletics': 'oak.jpg', 'Phillies': 'phi.jpg', 'Pirates': 'pit.jpg', 'Padres': 'sd.jpg',
                           'Mariners': 'sea.jpg', 'Giants': 'sf.jpg', 'Cardinals': 'stl.jpg', 'Rays': 'tb.jpg',
                           'Rangers': 'tex.jpg', 'Blue Jays': 'tor.jpg', 'Nationals': 'was.jpg'}
 
@@ -188,14 +189,17 @@ class MainWindow(QMainWindow, mlbui.Ui_MainWindow):
         """
         away_label = self.away_team_label
         home_label = self.home_team_label
+        game_time = self.free_game_time_label
         away_label.clear()
         home_label.clear()
         for game in games:
             if game.free == 'ALL':
                 home_pixmap = QPixmap('./logos/' + self.team_logos[game.home_team_name])
                 away_pixmap = QPixmap('./logos/' + self.team_logos[game.away_team_name])
+                event_time = game.event_time + ' EST'
                 away_label.setPixmap(away_pixmap)
                 home_label.setPixmap(home_pixmap)
+                game_time.setText(event_time)
                 return '{} @ {}'.format(game.away_team_name, game.home_team_name)
 
     def build_game_highlights(self, data):

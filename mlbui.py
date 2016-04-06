@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.\MLB_Highlights.ui'
+# Form implementation generated from reading ui file '.\mlbui.ui'
 #
 # Created by: PyQt5 UI code generator 5.5.1
 #
@@ -78,6 +78,9 @@ class Ui_MainWindow(object):
         self.radioButton = QtWidgets.QRadioButton(self.centralwidget)
         self.radioButton.setGeometry(QtCore.QRect(290, 60, 121, 17))
         self.radioButton.setObjectName("radioButton")
+        self.free_game_time_label = QtWidgets.QLabel(self.centralwidget)
+        self.free_game_time_label.setGeometry(QtCore.QRect(534, 54, 103, 19))
+        self.free_game_time_label.setObjectName("free_game_time_label")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -91,4 +94,5 @@ class Ui_MainWindow(object):
         self.get_game_button.setText(_translate("MainWindow", "Get Games"))
         self.label_2.setText(_translate("MainWindow", "MLB.TV Free Game of the Day"))
         self.radioButton.setText(_translate("MainWindow", "Play all replays"))
+        self.free_game_time_label.setText(_translate("MainWindow", "GameTime"))
 
