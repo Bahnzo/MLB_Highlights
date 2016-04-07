@@ -1,7 +1,7 @@
 import requests
 import json
 import bs4
-from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.QtMultimedia import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import QPixmap
@@ -138,7 +138,8 @@ class MainWindow(QMainWindow, mlbui.Ui_MainWindow):
                             self.single_game_highlights[replay.headline] = replay.replay_url  # creates dict entry
                         break
         if not found:
-            QMessageBox.warning(self, 'Warning!', 'No replay data found for this game')
+            self.replay_window.addItem('No Replay Data Found for this game')
+            #QMessageBox.warning(self, 'Warning!', 'No replay data found for this game')
 
     def show_game(self):
         """
@@ -251,7 +252,8 @@ class MainWindow(QMainWindow, mlbui.Ui_MainWindow):
         replay_data = []  # holds ReplayData() objects with data for each replay
         response = requests.get(self.media_url)
         if response.status_code == 404:
-            QMessageBox.warning(self, 'Warning!', '404 - Not Found Error\nNo Media found for this date.')
+            self.replay_window.addItem('No Media found for this date....yet?')
+            #QMessageBox.warning(self, 'Warning!', '404 - Not Found Error\nNo Media found for this date.')
         else:
             response.raise_for_status()
             page = bs4.BeautifulSoup(response.text, 'lxml')
